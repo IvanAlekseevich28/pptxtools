@@ -4,11 +4,12 @@ PPTX1=$1
 PPTX2=$2
 
 TEMPDIR=$(mktemp -d)
-echo "$TEMPDIR"
+PPTXDIR1=${TEMPDIR}/1
+PPTXDIR2=${TEMPDIR}/2
 
-unzip "$(TEMPDIR)/1" $PPTX1
-unzip "$(TEMPDIR)/2" $PPTX2
+unzip -q -d $PPTXDIR1 $PPTX1
+unzip -q -d $PPTXDIR2 $PPTX2
 
-meld "$(TEMPDIR)1" "$(TEMPDIR)2"
+meld "${TEMPDIR}/1" "${TEMPDIR}/2"
 
 rm -r $TEMPDIR
