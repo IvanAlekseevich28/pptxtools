@@ -14,6 +14,12 @@ then
 	apt install unzip	
 fi
 
+if [ -z ["$(which xmllint)"] ]
+then
+	apt update
+	apt install libxml2-utils	
+fi
+
 chmod +x $PROGNAME
 cp $PROGNAME /usr/local/bin/${PROGNAME}
 

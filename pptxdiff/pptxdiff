@@ -10,6 +10,18 @@ PPTXDIR2=${TEMPDIR}/2
 unzip -q -d $PPTXDIR1 $PPTX1
 unzip -q -d $PPTXDIR2 $PPTX2
 
+
+reformatxml() {
+	if [[ $1 == *.xml* ]] && [ -n ["$(xmllint --noout $1)"] ]
+	then
+		xmllint --format $1 -o $1
+	fi
+}
+
+for file in $(find $PPTXDIR1 -type f); do reformatxml $file; done
+for file in $(find $PPTXDIR2 -type f); do reformatxml $file; done
+
 meld "${TEMPDIR}/1" "${TEMPDIR}/2"
 
 rm -r $TEMPDIR
+
