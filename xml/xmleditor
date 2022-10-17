@@ -1,0 +1,23 @@
+#!/bin/bash -e
+
+SOURCE_FILE="/dev/null"
+if [ "$#" -eq 0 ]; then
+    SOURCE_FILE=$(zenity --file-selection --title="Choose file")
+else
+    SOURCE_FILE=$1
+fi
+
+TEMP_PRETTY_FILE=$(mktemp)
+md5sum $SOURCE_FILE
+
+xmllint --encode utf8 --format $SOURCE_FILE -o $TEMP_PRETTY_FILE
+
+emacs $TEMP_PRETTY_FILE
+
+xmllint --encode utf8 --noblanks $TEMP_PRETTY_FILE > $SOURCE_FILE
+perl -pi -e 's/\x3e\x0a/\x3e\x0d\x0a/g' $SOURCE_FILE
+# perl -i -0777 -pe 's/.$//' $SOURCE_FILE
+
+md5sum $SOURCE_FILE
+rm $TEMP_PRETTY_FILE
+echo -e $(basename $SOURCE_FILE)" \033[0;32msaved"

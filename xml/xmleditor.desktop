@@ -1,0 +1,12 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon[en_US]=emacs
+Name[en_US]=XEd
+Exec=/usr/bin/xmleditor
+Comment[en_US]=Edit oneline xml
+Name=XEd
+Comment=Edit oneline xml
+Icon=emacs
