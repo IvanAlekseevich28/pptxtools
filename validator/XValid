@@ -1,0 +1,24 @@
+#!/bin/bash -e
+
+SOURCE_FILE="/dev/null"
+if [ "$#" -eq 0 ]; then
+    SOURCE_FILE=$(zenity --file-selection --title="Choose ziped file")
+else
+    SOURCE_FILE=$1
+fi
+
+TEMP_DIR=$(mktemp -d)
+ZIPED_DIR=${TEMP_DIR}/$(basename $SOURCE_FILE | cut -d'.' -f1)
+unzip -q -d $ZIPED_DIR $SOURCE_FILE
+
+
+ALL_FILES_WELL_FORMAT=1
+for file in $(find $ZIPED_DIR -type f); do  
+    if [[ $file == *.xml* ]] && [ -z ["$(xmllint --noout $file)"] ]
+	then
+        ALL_FILES_WELL_FORMAT=0
+	fi
+done
+
+rm -r $TEMP_DIR
+exit $ALL_FILES_WELL_FORMAT
